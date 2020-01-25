@@ -111,7 +111,7 @@ echo "Downloading configuration files from https://github.com/${GITHUB_USER}/1-o
 echo "Generating workflow for platform ${PLATFORM}"
 
 # locations of analysis directory and results directory
-BASE=/home/daniel.finstad/projects/relbin_pe_paper/full_pipeline/test
+BASE=/home/daniel.finstad/projects/relbin_pe_paper/full_pipeline/run_workflow
 UNIQUE_ID=`uuidgen`
 RUN_TAG=phasetd_newsnr_foundinj_followup
 if [ ${PLATFORM} == "osgconnect" ] ; then
