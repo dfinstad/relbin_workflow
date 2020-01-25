@@ -187,7 +187,7 @@ pycbc_make_coinc_search_workflow \
   "results_page:analysis-subtitle:${WORKFLOW_SUBTITLE}" \
   "workflow-segments:segments-veto-definer-url:https://github.com/${GITHUB_USER}/1-ogc/raw/master/workflow/auxiliary_files/H1L1-DUMMY_O1_CBC_VDEF-1126051217-1220400.xml" \
   "workflow-segments:segments-science:DATA:CBC_CAT1_VETO" \
-  "coinc:statistic-files:/home/daniel.finstad/projects/relbin_pe_paper/offline_search/test/inj_minimal/dtime-dphase-stat.hdf" \
+  "coinc:statistic-files:${BASE}/stat_files/dtime-dphase-stat.hdf" \
   "optimal_snr:cores:8" \
   "coinc:ranking-statistic:phasetd_newsnr" \
   "workflow-datafind:datafind-method:AT_RUNTIME_FAKE_DATA" \
