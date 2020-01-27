@@ -113,7 +113,7 @@ echo "Generating workflow for platform ${PLATFORM}"
 # locations of analysis directory and results directory
 BASE=/home/daniel.finstad/projects/relbin_pe_paper/full_pipeline/run_workflow
 UNIQUE_ID=`uuidgen`
-RUN_TAG=phasetd_newsnr_foundinj_followup
+RUN_TAG=2ogc_stat_foundinj_followup
 if [ ${PLATFORM} == "osgconnect" ] ; then
   PROJECT_PATH=/stash/user/${USER}/1-ogc/analysis/analysis-${n}-${UNIQUE_ID}
   WEB_PATH=/stash/user/${USER}/public/1-ogc/results/analysis-${n}-${UNIQUE_ID}
@@ -139,7 +139,7 @@ pushd ${PROJECT_PATH}/$WORKFLOW_NAME
 export LIGO_DATAFIND_SERVER=sugwg-condor.phy.syr.edu:80
 
 if [ "x${TEST_WORKFLOW}" == "xyes" ] ; then
-  CONFIG_OVERRIDES="workflow:start-time:1128466607 workflow:end-time:1128486607 workflow-tmpltbank:tmpltbank-pregenerated-bank:https://github.com/${GITHUB_USER}/1-ogc/raw/master/workflow/auxiliary_files/H1L1-WORKFLOW_TEST_BANK-1163174417-604800.xml.gz workflow-splittable-full_data:splittable-num-banks:2"
+  CONFIG_OVERRIDES="workflow:start-time:1186998882 workflow:end-time:1187018882 workflow-tmpltbank:tmpltbank-pregenerated-bank:https://github.com/${GITHUB_USER}/1-ogc/raw/master/workflow/auxiliary_files/H1L1-WORKFLOW_TEST_BANK-1163174417-604800.xml.gz workflow-splittable-full_data:splittable-num-banks:2"
 else
    CONFIG_OVERRIDES="workflow-splittable-full_data:splittable-num-banks:30"
 fi
@@ -185,11 +185,14 @@ pycbc_create_offline_search_workflow \
   "results_page:output-path:${OUTPUT_PATH}" \
   "results_page:analysis-title:${WORKFLOW_TITLE}" \
   "results_page:analysis-subtitle:${WORKFLOW_SUBTITLE}" \
+  "workflow-ifos:v1:" \
+  "workflow:v1-channel-name:V1:GWOSC-16KHZ_R1_STRAIN" \
+  "workflow:file-retention-level:all_triggers" \
   "workflow-segments:segments-veto-definer-url:https://github.com/${GITHUB_USER}/1-ogc/raw/master/workflow/auxiliary_files/H1L1-DUMMY_O1_CBC_VDEF-1126051217-1220400.xml" \
-  "workflow-segments:segments-science:DATA:CBC_CAT1_VETO" \
-  "coinc:statistic-files:${BASE}/stat_files/statHL.hdf ${BASE}/stat_files/statLV.hdf ${BASE}/stat_files/statHV.hdf ${BASE}/stat_files/statHLV.hdf" \
+  "workflow-segments:segments-science:+DATA,-CBC_CAT1_VETO" \
+  "workflow-segments:segments-vetoes:+CBC_CAT2_VETO,+CBC_HW_INJ,+BURST_HW_INJ" \
+  "multiifo_coinc:statistic-files:${BASE}/stat_files/statHL.hdf ${BASE}/stat_files/statLV.hdf ${BASE}/stat_files/statHV.hdf ${BASE}/stat_files/statHLV.hdf" \
   "optimal_snr:cores:8" \
-  "coinc:ranking-statistic:phasetd_newsnr" \
   "workflow-datafind:datafind-method:AT_RUNTIME_FAKE_DATA" \
   "workflow-datafind:datafind-check-segment-gaps:no_test" \
   "workflow-datafind:datafind-check-frames-exist:no_test" \
@@ -197,6 +200,8 @@ pycbc_create_offline_search_workflow \
   "calculate_psd:fake-strain:aLIGODesignSensitivityP1200087" \
   "hdfinjfind:injection-window:2.0" \
   "hdfinjfind:optimal-snr-column:H1:alpha1 L1:alpha2 V1:alpha3" \
+  "fit_by_template:stat-threshold:5.0" \
+  "multiifo_coinc:verbose:" \
 --relbin-workflow
 
 
