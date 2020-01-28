@@ -118,7 +118,7 @@ if [ ${PLATFORM} == "osgconnect" ] ; then
   PROJECT_PATH=/stash/user/${USER}/1-ogc/analysis/analysis-${n}-${UNIQUE_ID}
   WEB_PATH=/stash/user/${USER}/public/1-ogc/results/analysis-${n}-${UNIQUE_ID}
 else
- PROJECT_PATH=${BASE}/analysis_multiifo/analysis-${n}-${RUN_TAG}-${UNIQUE_ID}
+ PROJECT_PATH=${BASE}/analysis_multiifo_3det/analysis-${n}-${RUN_TAG}-${UNIQUE_ID}
  WEB_PATH=${HOME}/secure_html/relative_binning/full_pipeline/offline_search/results/analysis-${n}-${RUN_TAG}-${UNIQUE_ID}
 fi
 
@@ -179,7 +179,7 @@ pycbc_create_offline_search_workflow \
   https://github.com/${GITHUB_USER}/1-ogc/raw/master/workflow/configuration/losc_data.ini \
   https://github.com/${GITHUB_USER}/1-ogc/raw/master/workflow/configuration/gps_times_O1_analysis_${n}.ini \
   ${BASE}/config_multiifo/executables_mod.ini \
-  ${BASE}/config_multiifo/plotting_mod.ini \
+  ${BASE}/config_multiifo/plotting_mod_3det.ini \
   ${BASE}/config_multiifo/injections_bns.ini \
 --config-overrides ${CONFIG_OVERRIDES} ${PLATFORM_CONFIG_OVERRIDES} \
   "results_page:output-path:${OUTPUT_PATH}" \
