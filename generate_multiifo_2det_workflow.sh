@@ -113,7 +113,7 @@ echo "Generating workflow for platform ${PLATFORM}"
 # locations of analysis directory and results directory
 BASE=/home/daniel.finstad/projects/relbin_pe_paper/full_pipeline/run_workflow
 UNIQUE_ID=`uuidgen`
-RUN_TAG=2ogc_stat_foundinj_followup
+RUN_TAG=2ogc_stat_foundinj_followup_2det
 if [ ${PLATFORM} == "osgconnect" ] ; then
   PROJECT_PATH=/stash/user/${USER}/1-ogc/analysis/analysis-${n}-${UNIQUE_ID}
   WEB_PATH=/stash/user/${USER}/public/1-ogc/results/analysis-${n}-${UNIQUE_ID}
@@ -199,7 +199,7 @@ pycbc_create_offline_search_workflow \
   "calculate_psd:fake-strain:aLIGODesignSensitivityP1200087" \
   "hdfinjfind:injection-window:2.0" \
   "hdfinjfind:optimal-snr-column:H1:alpha1 L1:alpha2" \
-  "fit_by_template:stat-threshold:5.0" \
+  "fit_by_template:stat-threshold:4.5" \
   "multiifo_coinc:verbose:" \
   "multiifo_statmap:verbose:" \
   "multiifo_statmap_inj:verbose:" \
