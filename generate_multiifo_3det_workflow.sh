@@ -141,7 +141,7 @@ export LIGO_DATAFIND_SERVER=sugwg-condor.phy.syr.edu:80
 if [ "x${TEST_WORKFLOW}" == "xyes" ] ; then
   CONFIG_OVERRIDES="workflow:start-time:1186998882 workflow:end-time:1187018882 workflow-tmpltbank:tmpltbank-pregenerated-bank:https://github.com/${GITHUB_USER}/1-ogc/raw/master/workflow/auxiliary_files/H1L1-WORKFLOW_TEST_BANK-1163174417-604800.xml.gz workflow-splittable-full_data:splittable-num-banks:2"
 else
-   CONFIG_OVERRIDES="workflow-splittable-full_data:splittable-num-banks:30"
+   CONFIG_OVERRIDES="workflow:start-time:1186998882 workflow:end-time:1187018882 workflow-splittable-full_data:splittable-num-banks:30"
 fi
 
 if [ ${PLATFORM} == "osgconnect" ] ; then
@@ -196,12 +196,16 @@ pycbc_create_offline_search_workflow \
   "workflow-datafind:datafind-method:AT_RUNTIME_FAKE_DATA" \
   "workflow-datafind:datafind-check-segment-gaps:no_test" \
   "workflow-datafind:datafind-check-frames-exist:no_test" \
-  "inspiral:fake-strain:aLIGODesignSensitivityP1200087" \
-  "calculate_psd:fake-strain:aLIGODesignSensitivityP1200087" \
+  "inspiral-h1:fake-strain:aLIGODesignSensitivityP1200087" \
+  "inspiral-l1:fake-strain:aLIGODesignSensitivityP1200087" \
+  "inspiral-v1:fake-strain:AdVDesignSensitivityP1200087" \
+  "calculate_psd-h1:fake-strain:aLIGODesignSensitivityP1200087" \
+  "calculate_psd-l1:fake-strain:aLIGODesignSensitivityP1200087" \
+  "calculate_psd-v1:fake-strain:AdVDesignSensitivityP1200087" \
   "hdfinjfind:injection-window:2.0" \
   "hdfinjfind:optimal-snr-column:H1:alpha1 L1:alpha2 V1:alpha3" \
   "fit_by_template:stat-threshold:4.5" \
-  "multiifo_statmap:veto-window:0.03" \
+  "multiifo_statmap:veto-window:0.01" \
   "multiifo_coinc:verbose:" \
   "multiifo_statmap:verbose:" \
   "multiifo_statmap_inj:verbose:" \
