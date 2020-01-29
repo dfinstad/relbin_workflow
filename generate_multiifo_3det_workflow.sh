@@ -206,6 +206,8 @@ pycbc_create_offline_search_workflow \
   "hdfinjfind:optimal-snr-column:H1:alpha1 L1:alpha2 V1:alpha3" \
   "fit_by_template:stat-threshold:4.5" \
   "multiifo_statmap:veto-window:0.01" \
+  "multiifo_statmap:max-hierarchical-removal:0" \
+  "multiifo_statmap:hierarchical-removal-against:none" \
   "multiifo_coinc:verbose:" \
   "multiifo_statmap:verbose:" \
   "multiifo_statmap_inj:verbose:" \
