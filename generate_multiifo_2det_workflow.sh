@@ -113,7 +113,12 @@ echo "Generating workflow for platform ${PLATFORM}"
 # locations of analysis directory and results directory
 BASE=/home/daniel.finstad/projects/relbin_pe_paper/full_pipeline/run_workflow
 UNIQUE_ID=`uuidgen`
-RUN_TAG=2ogc_stat_foundinj_followup_2det
+STAT=phasetdnew_newsnr_sgveto
+if [ "x${TEST_WORKFLOW}" == "xyes" ] ; then
+  RUN_TAG=TESTRUN_${STAT}_foundinj_followup_2det
+else
+  RUN_TAG=${STAT}_foundinj_followup_2det
+fi
 if [ ${PLATFORM} == "osgconnect" ] ; then
   PROJECT_PATH=/stash/user/${USER}/1-ogc/analysis/analysis-${n}-${UNIQUE_ID}
   WEB_PATH=/stash/user/${USER}/public/1-ogc/results/analysis-${n}-${UNIQUE_ID}
@@ -175,10 +180,10 @@ fi
 pycbc_create_offline_search_workflow \
 --workflow-name ${WORKFLOW_NAME} --output-dir output \
 --config-files \
-  https://github.com/${GITHUB_USER}/2-ogc/raw/master/search_configs/full/analysis.ini \
+  ${BASE}/config_multiifo/analysis_mod.ini \
   https://github.com/${GITHUB_USER}/1-ogc/raw/master/workflow/configuration/losc_data.ini \
   https://github.com/${GITHUB_USER}/1-ogc/raw/master/workflow/configuration/gps_times_O1_analysis_${n}.ini \
-  ${BASE}/config_multiifo/executables_mod.ini \
+  ${BASE}/config_multiifo/executables_mod_2det.ini \
   ${BASE}/config_multiifo/plotting_mod_2det.ini \
   ${BASE}/config_multiifo/injections_bns.ini \
 --config-overrides ${CONFIG_OVERRIDES} ${PLATFORM_CONFIG_OVERRIDES} \
@@ -188,9 +193,8 @@ pycbc_create_offline_search_workflow \
   "workflow:file-retention-level:all_triggers" \
   "workflow:v1-channel-name:V1:GWOSC-16KHZ_R1_STRAIN" \
   "workflow-segments:segments-veto-definer-url:https://github.com/${GITHUB_USER}/1-ogc/raw/master/workflow/auxiliary_files/H1L1-DUMMY_O1_CBC_VDEF-1126051217-1220400.xml" \
-  "workflow-segments:segments-science:+DATA,-CBC_CAT1_VETO" \
-  "workflow-segments:segments-vetoes:+CBC_CAT2_VETO,+CBC_HW_INJ,+BURST_HW_INJ" \
-  "multiifo_coinc:statistic-files:${BASE}/stat_files/statHL.hdf" \
+  "workflow-segments:segments-science:+DATA" \
+  "workflow-segments:segments-vetoes:-CBC_CAT1_VETO,-CBC_CAT2_VETO,-CBC_HW_INJ,-BURST_HW_INJ" \
   "optimal_snr:cores:8" \
   "workflow-datafind:datafind-method:AT_RUNTIME_FAKE_DATA" \
   "workflow-datafind:datafind-check-segment-gaps:no_test" \
@@ -199,7 +203,10 @@ pycbc_create_offline_search_workflow \
   "calculate_psd:fake-strain:aLIGODesignSensitivityP1200087" \
   "hdfinjfind:injection-window:2.0" \
   "hdfinjfind:optimal-snr-column:H1:alpha1 L1:alpha2" \
-  "fit_by_template:stat-threshold:4.5" \
+  "multiifo_coinc:statistic-files:${BASE}/stat_files/statHL.hdf" \
+  "multiifo_coinc:ranking-statistic:${STAT}" \
+  "inspiral:snr-threshold:4.5" \
+  "inspiral:cluster-window:8" \
   "multiifo_coinc:verbose:" \
   "multiifo_statmap:verbose:" \
   "multiifo_statmap_inj:verbose:" \
