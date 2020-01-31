@@ -113,18 +113,20 @@ echo "Generating workflow for platform ${PLATFORM}"
 # locations of analysis directory and results directory
 BASE=/home/daniel.finstad/projects/relbin_pe_paper/full_pipeline/run_workflow
 STAT=phasetdnew_newsnr_sgveto
+DURATION=50000
+HALFDUR=$(($DURATION / 2))
 UNIQUE_ID=`uuidgen`
 if [ "x${TEST_WORKFLOW}" == "xyes" ] ; then
-  RUN_TAG=TESTRUN_${STAT}_foundinj_followup_3det
+  RUN_TAG=TESTRUN_${STAT}_${DURATION%000}k_foundinj_followup_3det
 else
-  RUN_TAG=${STAT}_foundinj_followup_3det
+  RUN_TAG=${STAT}_${DURATION%000}k_foundinj_followup_3det
 fi
 if [ ${PLATFORM} == "osgconnect" ] ; then
   PROJECT_PATH=/stash/user/${USER}/1-ogc/analysis/analysis-${n}-${UNIQUE_ID}
   WEB_PATH=/stash/user/${USER}/public/1-ogc/results/analysis-${n}-${UNIQUE_ID}
 else
- PROJECT_PATH=${BASE}/analysis_multiifo_3det/analysis-${n}-${RUN_TAG}-${UNIQUE_ID}
- WEB_PATH=${HOME}/secure_html/relative_binning/full_pipeline/offline_search/results/analysis-${n}-${RUN_TAG}-${UNIQUE_ID}
+  PROJECT_PATH=${BASE}/analysis_multiifo_3det/analysis-${n}-${RUN_TAG}-${UNIQUE_ID}
+  WEB_PATH=${HOME}/secure_html/relative_binning/full_pipeline/offline_search/results/analysis-${n}-${RUN_TAG}-${UNIQUE_ID}
 fi
 
 set -e
@@ -144,9 +146,9 @@ pushd ${PROJECT_PATH}/$WORKFLOW_NAME
 export LIGO_DATAFIND_SERVER=sugwg-condor.phy.syr.edu:80
 
 if [ "x${TEST_WORKFLOW}" == "xyes" ] ; then
-  CONFIG_OVERRIDES="workflow:start-time:1186998882 workflow:end-time:1187018882 workflow-tmpltbank:tmpltbank-pregenerated-bank:https://github.com/${GITHUB_USER}/1-ogc/raw/master/workflow/auxiliary_files/H1L1-WORKFLOW_TEST_BANK-1163174417-604800.xml.gz workflow-splittable-full_data:splittable-num-banks:2"
+  CONFIG_OVERRIDES="workflow:start-time:$((1187008882 - $HALFDUR)) workflow:end-time:$((1187008882 + $HALFDUR)) workflow-tmpltbank:tmpltbank-pregenerated-bank:https://github.com/${GITHUB_USER}/1-ogc/raw/master/workflow/auxiliary_files/H1L1-WORKFLOW_TEST_BANK-1163174417-604800.xml.gz workflow-splittable-full_data:splittable-num-banks:2"
 else
-   CONFIG_OVERRIDES="workflow:start-time:1186998882 workflow:end-time:1187018882 workflow-splittable-full_data:splittable-num-banks:30"
+  CONFIG_OVERRIDES="workflow:start-time:$((1187008882 - $HALFDUR)) workflow:end-time:$((1187008882 + $HALFDUR)) workflow-splittable-full_data:splittable-num-banks:40"
 fi
 
 if [ ${PLATFORM} == "osgconnect" ] ; then

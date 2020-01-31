@@ -114,10 +114,12 @@ echo "Generating workflow for platform ${PLATFORM}"
 BASE=/home/daniel.finstad/projects/relbin_pe_paper/full_pipeline/run_workflow
 UNIQUE_ID=`uuidgen`
 STAT=phasetdnew_newsnr_sgveto
+DURATION=50000
+HALFDUR=$(($DURATION / 2))
 if [ "x${TEST_WORKFLOW}" == "xyes" ] ; then
-  RUN_TAG=TESTRUN_${STAT}_50k_foundinj_followup_2det
+  RUN_TAG=TESTRUN_${STAT}_${DURATION%000}k_foundinj_followup_2det
 else
-  RUN_TAG=${STAT}_50k_foundinj_followup_2det
+  RUN_TAG=${STAT}_${DURATION%000}k_foundinj_followup_2det
 fi
 if [ ${PLATFORM} == "osgconnect" ] ; then
   PROJECT_PATH=/stash/user/${USER}/1-ogc/analysis/analysis-${n}-${UNIQUE_ID}
@@ -144,9 +146,9 @@ pushd ${PROJECT_PATH}/$WORKFLOW_NAME
 export LIGO_DATAFIND_SERVER=sugwg-condor.phy.syr.edu:80
 
 if [ "x${TEST_WORKFLOW}" == "xyes" ] ; then
-  CONFIG_OVERRIDES="workflow:start-time:1186983882 workflow:end-time:1187033882 workflow-tmpltbank:tmpltbank-pregenerated-bank:https://github.com/${GITHUB_USER}/1-ogc/raw/master/workflow/auxiliary_files/H1L1-WORKFLOW_TEST_BANK-1163174417-604800.xml.gz workflow-splittable-full_data:splittable-num-banks:2"
+  CONFIG_OVERRIDES="workflow:start-time:$((1187008882 - $HALFDUR)) workflow:end-time:$((1187008882 + $HALFDUR)) workflow-tmpltbank:tmpltbank-pregenerated-bank:https://github.com/${GITHUB_USER}/1-ogc/raw/master/workflow/auxiliary_files/H1L1-WORKFLOW_TEST_BANK-1163174417-604800.xml.gz workflow-splittable-full_data:splittable-num-banks:2"
 else
-   CONFIG_OVERRIDES="workflow:start-time:1186983882 workflow:end-time:1187033882 workflow-splittable-full_data:splittable-num-banks:40"
+  CONFIG_OVERRIDES="workflow:start-time:$((1187008882 - $HALFDUR)) workflow:end-time:$((1187008882 + $HALFDUR)) workflow-splittable-full_data:splittable-num-banks:40"
 fi
 
 if [ ${PLATFORM} == "osgconnect" ] ; then
