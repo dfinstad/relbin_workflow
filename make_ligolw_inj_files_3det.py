@@ -213,10 +213,11 @@ with h5py.File(injfind_file, "r") as fp:
     v1_times = fp['found_after_vetoes/V1/time'][:]
 
 nfound = len(temp_ids)
+logging.info("Analysis has {} found injections".format(nfound))
 # loop over found injections
 #for temp_id, inj_id, h1_trig_id, l1_trig_id, h1_time, l1_time in \
 #    zip(temp_ids, inj_ids, h1_trig_ids, l1_trig_ids, h1_times, l1_times):
-for i in range(5):
+for i in range(nfound):
         temp_id = temp_ids[i]
         inj_id = inj_ids[i]
         h1_trig_id = h1_trig_ids[i]
