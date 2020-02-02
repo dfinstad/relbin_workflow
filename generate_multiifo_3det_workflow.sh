@@ -113,13 +113,12 @@ echo "Generating workflow for platform ${PLATFORM}"
 # locations of analysis directory and results directory
 BASE=/home/daniel.finstad/projects/relbin_pe_paper/full_pipeline/run_workflow
 STAT=phasetdnew_newsnr_sgveto
-DURATION=50000
+DURATION=20000
 HALFDUR=$(($DURATION / 2))
 UNIQUE_ID=`uuidgen`
+RUN_TAG=${STAT}_${DURATION%000}k_foundinj_followup_3det
 if [ "x${TEST_WORKFLOW}" == "xyes" ] ; then
-  RUN_TAG=TESTRUN_${STAT}_${DURATION%000}k_foundinj_followup_3det
-else
-  RUN_TAG=${STAT}_${DURATION%000}k_foundinj_followup_3det
+  RUN_TAG="TESTRUN_${RUN_TAG}"
 fi
 if [ ${PLATFORM} == "osgconnect" ] ; then
   PROJECT_PATH=/stash/user/${USER}/1-ogc/analysis/analysis-${n}-${UNIQUE_ID}
@@ -133,7 +132,7 @@ set -e
 
 WORKFLOW_NAME=analysis-${n}-${RUN_TAG}-${PYCBC_TAG}-${DATA_TYPE}
 OUTPUT_PATH=${WEB_PATH}/${WORKFLOW_NAME}
-WORKFLOW_TITLE="'O1 Analysis ${n} ${DATA_TYPE}'"
+WORKFLOW_TITLE="'Relative Binning Workflow ${n} ${DATA_TYPE}'"
 WORKFLOW_SUBTITLE="'PyCBC ${PYCBC_TAG} Open GW Analysis'"
 
 if [ -d ${PROJECT_PATH}/$WORKFLOW_NAME ] ; then
@@ -205,15 +204,22 @@ pycbc_create_offline_search_workflow \
   "inspiral-h1:fake-strain:aLIGODesignSensitivityP1200087" \
   "inspiral-l1:fake-strain:aLIGODesignSensitivityP1200087" \
   "inspiral-v1:fake-strain:AdVDesignSensitivityP1200087" \
+  "inspiral-h1:fake-strain-seed:0" \
+  "inspiral-l1:fake-strain-seed:1" \
+  "inspiral-v1:fake-strain-seed:2" \
   "calculate_psd-h1:fake-strain:aLIGODesignSensitivityP1200087" \
   "calculate_psd-l1:fake-strain:aLIGODesignSensitivityP1200087" \
   "calculate_psd-v1:fake-strain:AdVDesignSensitivityP1200087" \
+  "calculate_psd-h1:fake-strain-seed:0" \
+  "calculate_psd-l1:fake-strain-seed:1" \
+  "calculate_psd-v1:fake-strain-seed:2" \
   "hdfinjfind:injection-window:2.0" \
   "hdfinjfind:optimal-snr-column:H1:alpha1 L1:alpha2 V1:alpha3" \
   "multiifo_coinc:statistic-files:${BASE}/stat_files/statHL.hdf ${BASE}/stat_files/statLV.hdf ${BASE}/stat_files/statHV.hdf ${BASE}/stat_files/statHLV.hdf" \
   "multiifo_coinc:ranking-statistic:${STAT}" \
   "inspiral:snr-threshold:4.5" \
   "inspiral:cluster-window:8" \
+  "inspiral:verbose:" \
   "multiifo_coinc:verbose:" \
   "multiifo_statmap:verbose:" \
   "multiifo_statmap_inj:verbose:" \

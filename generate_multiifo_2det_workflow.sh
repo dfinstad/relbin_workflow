@@ -114,12 +114,11 @@ echo "Generating workflow for platform ${PLATFORM}"
 BASE=/home/daniel.finstad/projects/relbin_pe_paper/full_pipeline/run_workflow
 UNIQUE_ID=`uuidgen`
 STAT=phasetdnew_newsnr_sgveto
-DURATION=50000
+DURATION=20000
 HALFDUR=$(($DURATION / 2))
+RUN_TAG=${STAT}_${DURATION%000}k_foundinj_followup_2det
 if [ "x${TEST_WORKFLOW}" == "xyes" ] ; then
-  RUN_TAG=TESTRUN_${STAT}_${DURATION%000}k_foundinj_followup_2det
-else
-  RUN_TAG=${STAT}_${DURATION%000}k_foundinj_followup_2det
+  RUN_TAG="TESTRUN_${RUN_TAG}"
 fi
 if [ ${PLATFORM} == "osgconnect" ] ; then
   PROJECT_PATH=/stash/user/${USER}/1-ogc/analysis/analysis-${n}-${UNIQUE_ID}
@@ -133,7 +132,7 @@ set -e
 
 WORKFLOW_NAME=analysis-${n}-${RUN_TAG}-${PYCBC_TAG}-${DATA_TYPE}
 OUTPUT_PATH=${WEB_PATH}/${WORKFLOW_NAME}
-WORKFLOW_TITLE="'O1 Analysis ${n} ${DATA_TYPE}'"
+WORKFLOW_TITLE="'Relative Binning Workflow Analysis ${n} ${DATA_TYPE}'"
 WORKFLOW_SUBTITLE="'PyCBC ${PYCBC_TAG} Open GW Analysis'"
 
 if [ -d ${PROJECT_PATH}/$WORKFLOW_NAME ] ; then
@@ -202,13 +201,18 @@ pycbc_create_offline_search_workflow \
   "workflow-datafind:datafind-check-segment-gaps:no_test" \
   "workflow-datafind:datafind-check-frames-exist:no_test" \
   "inspiral:fake-strain:aLIGODesignSensitivityP1200087" \
+  "inspiral-h1:fake-strain-seed:0" \
+  "inspiral-l1:fake-strain-seed:1" \
   "calculate_psd:fake-strain:aLIGODesignSensitivityP1200087" \
+  "calculate_psd-h1:fake-strain-seed:0" \
+  "calculate_psd-l1:fake-strain-seed:1" \
   "hdfinjfind:injection-window:2.0" \
   "hdfinjfind:optimal-snr-column:H1:alpha1 L1:alpha2" \
   "multiifo_coinc:statistic-files:${BASE}/stat_files/statHL.hdf" \
   "multiifo_coinc:ranking-statistic:${STAT}" \
   "inspiral:snr-threshold:4.5" \
   "inspiral:cluster-window:8" \
+  "inspiral:verbose:" \
   "multiifo_coinc:verbose:" \
   "multiifo_statmap:verbose:" \
   "multiifo_statmap_inj:verbose:" \
