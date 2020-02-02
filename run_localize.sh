@@ -17,7 +17,7 @@ mkdir -p ${OUTDIR}
 cd ${OUTDIR}
 for FILE in ../ligolw_files/*.xml; do
     # Run BAYESTAR
-    bayestar-localize-coincs ${FILE}
+    bayestar-localize-coincs ${FILE} --f-low 25
     # rename output file from 0.fits
     INJID=${FILE#../ligolw_files/ligolw_injection_}
     INJID=${INJID%.xml}

@@ -17,7 +17,7 @@ analysis_subdir = glob.glob("{}/analysis*/".format(analysis_dir))[0]
 print(analysis_dir)
 print(analysis_subdir)
 inj_dir = glob.glob("{}/output/BNSSTT2*/".format(analysis_subdir))[0]
-injfind_file = glob.glob("{}/*HDFINJFIND*.hdf".format(inj_dir))[0]
+injfind_file = glob.glob("{}/*HDFINJFIND*BNS*.hdf".format(inj_dir))[0]
 injfind = h5py.File(injfind_file, "r")
 
 found_idx = injfind['found_after_vetoes/injection_index'][:]

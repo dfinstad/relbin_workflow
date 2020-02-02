@@ -214,9 +214,6 @@ with h5py.File(injfind_file, "r") as fp:
 
 nfound = len(temp_ids)
 logging.info("Analysis has {} found injections".format(nfound))
-# loop over found injections
-#for temp_id, inj_id, h1_trig_id, l1_trig_id, h1_time, l1_time in \
-#    zip(temp_ids, inj_ids, h1_trig_ids, l1_trig_ids, h1_times, l1_times):
 for i in range(nfound):
         temp_id = temp_ids[i]
         inj_id = inj_ids[i]
@@ -333,16 +330,6 @@ for i in range(nfound):
                     delta_t = fp['snr'].attrs['delta_t']
                     snr_series = fp['snr'][:]
                 _add_snr_series(outdoc, snr_series, epoch, delta_t, i+1)
-
-        #h1_snr_file = glob.glob("{}/H1-SINGLE_TEMPLATE_P1_SNR_SERIES_H1_{}-*.hdf".format(foundinj_dir, inj_id))[0]
-        #l1_snr_file = glob.glob("{}/L1-SINGLE_TEMPLATE_P1_SNR_SERIES_L1_{}-*.hdf".format(foundinj_dir, inj_id))[0]
-        #v1_snr_file = glob.glob("{}/V1-SINGLE_TEMPLATE_P1_SNR_SERIES_V1_{}-*.hdf".format(foundinj_dir, inj_id))[0]
-        #for i, snr_file in enumerate([h1_snr_file, l1_snr_file]):
-        #    with h5py.File(snr_file, 'r') as fp:
-        #        epoch = fp['snr'].attrs['start_time']
-        #        delta_t = fp['snr'].attrs['delta_t']
-        #        snr_series = fp['snr'][:]
-        #    _add_snr_series(outdoc, snr_series, epoch, delta_t, i+1)
 
         logging.info("Writing file")
         outfile = "{}/ligolw_injection_{}.xml".format(output_dir, inj_id)
