@@ -114,7 +114,7 @@ echo "Generating workflow for platform ${PLATFORM}"
 # locations of analysis directory and results directory
 BASE=/home/daniel.finstad/projects/relbin_pe_paper/full_pipeline/run_workflow
 UNIQUE_ID=`uuidgen`
-STAT=phasetdnew_newsnr_sgveto
+STAT=2ogc #phasetdnew_newsnr_sgveto
 DURATION=21600
 CENTER_TIME=1187008882
 HALFDUR=$(($DURATION / 2))
@@ -157,18 +157,21 @@ EXEC_FILE=""
 pycbc_create_offline_search_workflow \
 --workflow-name ${WORKFLOW_NAME} --output-dir output \
 --config-files \
-  ${BASE}/config_multiifo/analysis_mod_o1_test.ini \
-  ${BASE}/config_multiifo/executables_mod_3det.ini \
-  ${BASE}/config_multiifo/plotting_mod_3det.ini \
+  ${BASE}/config_multiifo/analysis_mod_real_data_3det_test.ini \
+  https://github.com/${GITHUB_USER}/2-ogc/raw/master/search_configs/full/executables.ini \
+  https://github.com/${GITHUB_USER}/2-ogc/raw/master/search_configs/full/plotting.ini \
   https://github.com/${GITHUB_USER}/2-ogc/raw/master/search_configs/times/gps_times_O2_analysis_21.ini \
   https://github.com/${GITHUB_USER}/2-ogc/raw/master/search_configs/full/data_O2.ini \
-  ${BASE}/config_multiifo/injections_bns.ini \
 --config-overrides ${CONFIG_OVERRIDES} ${PLATFORM_CONFIG_OVERRIDES} \
   "results_page:output-path:${OUTPUT_PATH}" \
   "results_page:analysis-title:${WORKFLOW_TITLE}" \
   "results_page:analysis-subtitle:${WORKFLOW_SUBTITLE}" \
   "workflow-ifos:v1:" \
   "workflow:file-retention-level:all_triggers" \
+  "workflow-coincidence-full_data-3det_h1l1v1:parallelization-factor:3000" \
+  "workflow-coincidence-full_data-2det_h1l1:parallelization-factor:1000" \
+  "workflow-coincidence-full_data-2det_h1v1:parallelization-factor:1000" \
+  "workflow-coincidence-full_data-2det_l1v1:parallelization-factor:1000" \
   "workflow-segments:segments-veto-definer-url:https://github.com/${GITHUB_USER}/1-ogc/raw/master/workflow/auxiliary_files/H1L1-DUMMY_O1_CBC_VDEF-1126051217-1220400.xml" \
   "workflow-datafind:datafind-check-segment-gaps:update_times" \
   "workflow-datafind:datafind-check-frames-exist:raise_error" \
