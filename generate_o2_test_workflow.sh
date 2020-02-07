@@ -22,71 +22,68 @@ NO_PLAN=""
 NO_SUBMIT=""
 
 # platform for submission
-PLATFORM="osgconnect"
-
-# generate test workflow
-TEST_WORKFLOW=""
+PLATFORM="vanilla"
 
 # generate test on O2 data
-O2_TEST=""
+O2_TEST="yes"
 
-GETOPT_CMD=`getopt -o a:d:p:g:P:thnN --long o2-test,analysis-segment:,data-type:,pycbc-tag:,github-user:,platform:,test-workflow,help,no-submit,no-plan -n 'generate_workflow.sh' -- "$@"`
-eval set -- "$GETOPT_CMD"
-
-while true ; do
-  case "$1" in
-    -a|--analysis-segment)
-      case "$2" in
-        "") shift 2 ;;
-        *) n=$2 ; shift 2 ;;
-      esac ;;
-    -d|--data-type)
-      case "$2" in
-        "") shift 2 ;;
-        *) DATA_TYPE=$2 ; shift 2 ;;
-      esac ;;
-    -p|--pycbc-tag)
-      case "$2" in
-        "") shift 2 ;;
-        *) PYCBC_TAG=$2 ; shift 2 ;;
-      esac ;;
-    -p|--github-user)
-      case "$2" in
-        "") shift 2 ;;
-        *) GITHUB_USER=$2 ; shift 2 ;;
-      esac ;;
-    -P|--platform)
-      case "$2" in
-        "") shift 2 ;;
-        *) PLATFORM=$2 ; shift 2 ;;
-      esac ;;
-    -t|--test-workflow) TEST_WORKFLOW='yes' ; shift ;;
-    -T|--o2-test) O2_TEST='yes' ; shift ;;
-    -n|--no-submit) NO_SUBMIT='--no-submit' ; shift ;;
-    -N|--no-plan) NO_PLAN='yes' ; shift ;;
-    -h|--help)
-      echo "usage: ${0} [-h] [-n] (-a N|-t) [-d DATA_TYPE] [-p PYCBC_TAG] -g GITHUB_TOKEN"
-      echo
-      echo "either one of the follow two arguments must be given:"
-      echo "  -a, --analysis-segment  analysis segment number to run [1-9]"
-      echo "  -t, --test-workflow     generate a small test workflow"
-      echo
-      echo "optional arguments:"
-      echo "  -d, --data-type         type of data to analyze [LOSC_16_V1]"
-      echo "  -p, --pycbc-tag         valid tag of PyCBC to use [v1.13.0]"
-      echo "  -g, --github-user       use 1-ocg repository from user [gwastro]"
-      echo "  -P, --platform          setup workflow to run on one of the following"
-      echo "                            platforms [osgconnect|orangegrid|vanilla]"
-      echo "                            default is osgconnect."
-      echo "  -h, --help              show this help message and exit"
-      echo "  -N, --no-plan           exit after generating the workflow"
-      echo "  -n, --no-submit         exit after generating and planning the workflow"
-      echo
-      exit 0 ;;
-    --) shift ; break ;;
-    *) echo "Internal error!" ; exit 1 ;;
-  esac
-done
+#GETOPT_CMD=`getopt -o a:d:p:g:P:thnN --long o2-test,analysis-segment:,data-type:,pycbc-tag:,github-user:,platform:,test-workflow,help,no-submit,no-plan -n 'generate_workflow.sh' -- "$@"`
+#eval set -- "$GETOPT_CMD"
+#
+#while true ; do
+#  case "$1" in
+#    -a|--analysis-segment)
+#      case "$2" in
+#        "") shift 2 ;;
+#        *) n=$2 ; shift 2 ;;
+#      esac ;;
+#    -d|--data-type)
+#      case "$2" in
+#        "") shift 2 ;;
+#        *) DATA_TYPE=$2 ; shift 2 ;;
+#      esac ;;
+#    -p|--pycbc-tag)
+#      case "$2" in
+#        "") shift 2 ;;
+#        *) PYCBC_TAG=$2 ; shift 2 ;;
+#      esac ;;
+#    -p|--github-user)
+#      case "$2" in
+#        "") shift 2 ;;
+#        *) GITHUB_USER=$2 ; shift 2 ;;
+#      esac ;;
+#    -P|--platform)
+#      case "$2" in
+#        "") shift 2 ;;
+#        *) PLATFORM=$2 ; shift 2 ;;
+#      esac ;;
+#    -t|--test-workflow) TEST_WORKFLOW='yes' ; shift ;;
+#    -T|--o2-test) O2_TEST='yes' ; shift ;;
+#    -n|--no-submit) NO_SUBMIT='--no-submit' ; shift ;;
+#    -N|--no-plan) NO_PLAN='yes' ; shift ;;
+#    -h|--help)
+#      echo "usage: ${0} [-h] [-n] (-a N|-t) [-d DATA_TYPE] [-p PYCBC_TAG] -g GITHUB_TOKEN"
+#      echo
+#      echo "either one of the follow two arguments must be given:"
+#      echo "  -a, --analysis-segment  analysis segment number to run [1-9]"
+#      echo "  -t, --test-workflow     generate a small test workflow"
+#      echo
+#      echo "optional arguments:"
+#      echo "  -d, --data-type         type of data to analyze [LOSC_16_V1]"
+#      echo "  -p, --pycbc-tag         valid tag of PyCBC to use [v1.13.0]"
+#      echo "  -g, --github-user       use 1-ocg repository from user [gwastro]"
+#      echo "  -P, --platform          setup workflow to run on one of the following"
+#      echo "                            platforms [osgconnect|orangegrid|vanilla]"
+#      echo "                            default is osgconnect."
+#      echo "  -h, --help              show this help message and exit"
+#      echo "  -N, --no-plan           exit after generating the workflow"
+#      echo "  -n, --no-submit         exit after generating and planning the workflow"
+#      echo
+#      exit 0 ;;
+#    --) shift ; break ;;
+#    *) echo "Internal error!" ; exit 1 ;;
+#  esac
+#done
 
 if [[ "x${TEST_WORKFLOW}" == "xyes" || "x${O2_TEST}" == "xyes" ]]; then
   if [ "x${n}" == "x" ]; then
@@ -147,15 +144,24 @@ CONFIG_OVERRIDES="workflow:start-time:$(($CENTER_TIME - $HALFDUR)) workflow:end-
 PLATFORM_CONFIG_OVERRIDES=""
 EXEC_FILE=""
 
+#  ${BASE}/config_multiifo/analysis_mod_o1_test.ini \
+#  ${BASE}/config_multiifo/executables_mod_3det.ini \
+#  ${BASE}/config_multiifo/plotting_mod_3det.ini \
+
+#  https://github.com/${GITHUB_USER}/2-ogc/raw/master/search_configs/full/analysis.ini \
+#  https://github.com/${GITHUB_USER}/2-ogc/raw/master/search_configs/full/executables.ini \
+#  https://github.com/${GITHUB_USER}/2-ogc/raw/master/search_configs/full/plotting.ini \
+
+#  "workflow-segments:segments-veto-definer-url:https://github.com/${GITHUB_USER}/1-ogc/raw/master/workflow/auxiliary_files/H1L1-DUMMY_O1_CBC_VDEF-1126051217-1220400.xml" \
 
 pycbc_create_offline_search_workflow \
 --workflow-name ${WORKFLOW_NAME} --output-dir output \
 --config-files \
   ${BASE}/config_multiifo/analysis_mod_o1_test.ini \
-  https://github.com/${GITHUB_USER}/1-ogc/raw/master/workflow/configuration/losc_data.ini \
-  https://github.com/${GITHUB_USER}/2-ogc/raw/master/search_configs/full/data_O2.ini \
   ${BASE}/config_multiifo/executables_mod_3det.ini \
   ${BASE}/config_multiifo/plotting_mod_3det.ini \
+  https://github.com/${GITHUB_USER}/2-ogc/raw/master/search_configs/times/gps_times_O2_analysis_21.ini \
+  https://github.com/${GITHUB_USER}/2-ogc/raw/master/search_configs/full/data_O2.ini \
   ${BASE}/config_multiifo/injections_bns.ini \
 --config-overrides ${CONFIG_OVERRIDES} ${PLATFORM_CONFIG_OVERRIDES} \
   "results_page:output-path:${OUTPUT_PATH}" \
@@ -164,6 +170,8 @@ pycbc_create_offline_search_workflow \
   "workflow-ifos:v1:" \
   "workflow:file-retention-level:all_triggers" \
   "workflow-segments:segments-veto-definer-url:https://github.com/${GITHUB_USER}/1-ogc/raw/master/workflow/auxiliary_files/H1L1-DUMMY_O1_CBC_VDEF-1126051217-1220400.xml" \
+  "workflow-datafind:datafind-check-segment-gaps:update_times" \
+  "workflow-datafind:datafind-check-frames-exist:raise_error" \
   "optimal_snr:cores:8" \
   "multiifo_coinc:statistic-files:${BASE}/stat_files/statHL.hdf ${BASE}/stat_files/statLV.hdf ${BASE}/stat_files/statHV.hdf ${BASE}/stat_files/statHLV.hdf" \
   "multiifo_coinc:ranking-statistic:${STAT}" \
